@@ -1267,31 +1267,43 @@ function renderDayMenu(dayKey) {
 /* ── RENDER FIXED MENU ── */
 function renderFixedMenu() {
   const container = document.getElementById('fixed-menu-container');
+  if(!container) return;
   container.innerHTML = FIXED_MENU.map(cat => `
     <div class="category-section reveal">
-      <div class="category-title">${cat.category}</div>
+      <h3 class="category-title">${cat.category}</h3>
       <div class="fixed-menu-grid">
-        ${cat.items.map((item,i) => {
-          const key = `fixed-${cat.category}-${i}`;
-          const q = getQty(key);
-          const btnHtml = q > 0
-            ? `<div class="card-in-cart" style="transform:scale(0.9)"><button class="qty-btn" onclick="removeFromCart('${key}')">−</button><span class="qty-display">${q}</span><button class="qty-btn" onclick="addToCart('${key}','${item.name}',${item.price})">+</button></div>`
-            : `<button class="add-btn" onclick="addToCart('${key}','${item.name}',${item.price})">+</button>`;
+        ${cat.items.map(item => {
+          const key = `fixed-${item.name.replace(/\s+/g, '')}`;
           return `
             <div class="fixed-card">
               <div class="fixed-card-left">
                 <span class="fixed-card-emoji">${item.emoji}</span>
                 <span class="fixed-card-name">${item.name}</span>
               </div>
-              <div style="display:flex;align-items:center;gap:0.6rem;flex-shrink:0">
+              <div style="display:flex; align-items:center; gap:0.8rem">
                 <span class="fixed-card-price">${formatMXN(item.price)}</span>
-                <div data-item-key="${key}" data-price="${item.price}" data-name="${item.name}">${btnHtml}</div>
+                <div data-item-key="${key}" data-price="${item.price}" data-name="${item.name}">
+                   <button class="add-btn" onclick="addToCart('${key}','${item.name}',${item.price})">+</button>
+                </div>
               </div>
             </div>`;
         }).join('')}
       </div>
     </div>`).join('');
 }
+
+// INICIALIZACIÓN DEFINITIVA
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    renderTabs();
+    renderDayMenu(getTodayKey());
+    renderFixedMenu();
+    observeReveal();
+    console.log("Sistema 'El Buen Sabor' cargado correctamente.");
+  } catch (e) {
+    console.error("Error al cargar el menú:", e);
+  }
+});
 
 /* ── RENDER TABS ── */
 function renderTabs() {
