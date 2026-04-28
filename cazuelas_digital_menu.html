@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Buen Sabor Las Cazuelas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Libre+Baskerville:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ██████╗  █████╗ ███████╗███████╗
+  ██╔══██╗██╔══██╗██╔════╝██╔════╝
+  ██████╔╝███████║███████╗█████╗  
+  ██╔══██╗██╔══██║╚════██║██╔══╝  
+  ██████╔╝██║  ██║███████║███████╗
+  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝
+   VARIABLES & RESET
+============================================================ */
+:root {
+  --terracotta: #C4603A;
+  --terracotta-light: #E07A55;
+  --terracotta-dark: #9A4428;
+  --avocado: #4A5E28;
+  --avocado-light: #6B8540;
+  --avocado-dark: #2E3A18;
+  --sand: #F2ECD8;
+  --sand-dark: #E8DFC4;
+  --sand-darker: #D4C9A8;
+  --ink: #1A1208;
+  --cream: #FDFAF3;
+  --gold: #C9992A;
+  --gold-light: #E8B84B;
+  --glass-bg: rgba(242,236,216,0.18);
+  --glass-border: rgba(242,236,216,0.35);
+  --shadow-warm: 0 8px 40px rgba(196,96,58,0.18);
+  --shadow-deep: 0 20px 60px rgba(26,18,8,0.25);
+  --radius-card: 20px;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-accent: 'Libre Baskerville', Georgia, serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   ████████╗███████╗██╗  ██╗████████╗██╗   ██╗██████╗ ███████╗
+      ██╔══╝██╔════╝╚██╗██╔╝╚══██╔══╝██║   ██║██╔══██╗██╔════╝
+      ██║   █████╗   ╚███╔╝    ██║   ██║   ██║██████╔╝█████╗  
+      ██║   ██╔══╝   ██╔██╗    ██║   ██║   ██║██╔══██╗██╔══╝  
+      ██║   ███████╗██╔╝ ██╗   ██║   ╚██████╔╝██║  ██║███████╗
+      ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝
+   TEXTURES & BACKGROUNDS
+============================================================ */
+.noise-overlay {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1000;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   ██╗  ██╗███████╗██████╗  ██████╗ 
+   ██║  ██║██╔════╝██╔══██╗██╔═══██╗
+   ███████║█████╗  ██████╔╝██║   ██║
+   ██╔══██║██╔══╝  ██╔══██╗██║   ██║
+   ██║  ██║███████╗██║  ██║╚██████╔╝
+   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝ ╚═════╝ 
+   HERO SECTION
+============================================================ */
+.hero {
+  min-height: 100svh;
+  background: linear-gradient(160deg, var(--avocado-dark) 0%, var(--avocado) 40%, var(--terracotta-dark) 100%);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 2rem;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(201,153,42,0.25) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%, rgba(196,96,58,0.3) 0%, transparent 60%);
+}
+.hero-mandala {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: min(700px, 120vw); height: min(700px, 120vw);
+  opacity: 0.06;
+  animation: slowSpin 60s linear infinite;
+}
+@keyframes slowSpin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+.hero-badge {
+  background: rgba(201,153,42,0.2);
+  border: 1px solid rgba(201,153,42,0.5);
+  backdrop-filter: blur(10px);
+  color: var(--gold-light);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 0.4rem 1.2rem;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 7rem);
+  font-weight: 900;
+  color: var(--sand);
+  line-height: 0.9;
+  text-align: center;
+  position: relative; z-index: 2;
+  animation: fadeUp 0.9s ease 0.1s both;
+}
+.hero-title span {
+  display: block;
+  color: var(--terracotta-light);
+  font-style: italic;
+  font-size: 0.55em;
+}
+.hero-sub {
+  font-family: var(--font-accent);
+  font-style: italic;
+  color: var(--sand-dark);
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  margin-top: 1.5rem;
+  text-align: center;
+  max-width: 420px;
+  line-height: 1.6;
+  animation: fadeUp 1s ease 0.2s both;
+}
+.hero-cta-group {
+  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+  margin-top: 2.5rem;
+  animation: fadeUp 1s ease 0.3s both;
+}
+.btn-primary {
+  background: var(--terracotta);
+  color: var(--cream);
+  border: none;
+  padding: 0.85rem 2rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(196,96,58,0.4);
+}
+.btn-primary:hover { background: var(--terracotta-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(196,96,58,0.5); }
+.btn-secondary {
+  background: transparent;
+  color: var(--sand);
+  border: 1.5px solid rgba(242,236,216,0.4);
+  padding: 0.85rem 2rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+.btn-secondary:hover { border-color: var(--sand); background: rgba(242,236,216,0.1); }
+
+.hero-scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  color: rgba(242,236,216,0.4);
+  font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+  animation: fadeUp 1s ease 0.5s both;
+}
+.scroll-dot {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, rgba(242,236,216,0.4), transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+@keyframes scrollPulse { 0%,100%{opacity:0.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(0.6)} }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   ███╗   ██╗ █████╗ ██╗   ██╗
+   ████╗  ██║██╔══██╗██║   ██║
+   ██╔██╗ ██║███████║██║   ██║
+   ██║╚██╗██║██╔══██║╚██╗ ██╔╝
+   ██║ ╚████║██║  ██║ ╚████╔╝ 
+   ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  
+   NAVIGATION
+============================================================ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+  padding: 1rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: all 0.3s ease;
+}
+.nav.scrolled {
+  background: rgba(26,18,8,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(242,236,216,0.1);
+  padding: 0.75rem 2rem;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--sand);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.nav-logo span { color: var(--terracotta-light); font-style: italic; }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-link {
+  color: rgba(242,236,216,0.7);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--sand); }
+.nav-cart-btn {
+  background: var(--terracotta);
+  color: var(--cream);
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 0.4rem;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+}
+.nav-cart-btn:hover { background: var(--terracotta-light); }
+.cart-count {
+  background: var(--gold);
+  color: var(--ink);
+  border-radius: 999px;
+  width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 18px;
+}
+
+/* ============================================================
+   ███╗   ███╗███████╗███╗   ██╗██╗   ██╗
+   ████╗ ████║██╔════╝████╗  ██║██║   ██║
+   ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║
+   ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║
+   ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
+   ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ 
+   DAILY MENU SECTION
+============================================================ */
+.section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+.section-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+.section-title em { color: var(--terracotta); font-style: italic; }
+.section-desc {
+  font-family: var(--font-accent);
+  font-style: italic;
+  color: #6B5D45;
+  font-size: 1rem;
+  max-width: 480px;
+  line-height: 1.7;
+}
+.divider {
+  width: 60px; height: 3px;
+  background: linear-gradient(to right, var(--terracotta), var(--gold));
+  border-radius: 2px;
+  margin: 1.5rem 0;
+}
+
+/* Day Tabs */
+.day-tabs {
+  display: flex; gap: 0.5rem; flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.day-tab {
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--sand-darker);
+  background: var(--cream);
+  color: #8A7560;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.day-tab.active {
+  background: var(--terracotta);
+  border-color: var(--terracotta);
+  color: var(--cream);
+  box-shadow: 0 4px 16px rgba(196,96,58,0.3);
+}
+.day-tab.today-tab::after {
+  content: '●';
+  position: absolute; top: -4px; right: -2px;
+  font-size: 8px;
+  color: var(--gold);
+}
+.day-tab:hover:not(.active) { border-color: var(--terracotta); color: var(--terracotta); }
+
+/* Specials Grid */
+.specials-header {
+  background: linear-gradient(135deg, var(--avocado-dark) 0%, var(--avocado) 100%);
+  border-radius: 16px 16px 0 0;
+  padding: 1.5rem 2rem;
+  margin-bottom: 0;
+  display: flex; align-items: center; gap: 1rem;
+}
+.specials-header-title {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--sand);
+  font-weight: 700;
+}
+.today-badge {
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+}
+.specials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--sand-dark);
+  border-radius: 0 0 16px 16px;
+  border: 1px solid var(--sand-darker);
+  border-top: none;
+}
+
+/* Menu Cards */
+.menu-card {
+  background: rgba(253,250,243,0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212,201,168,0.6);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+  display: flex; flex-direction: column; gap: 0.75rem;
+  transition: all 0.25s ease;
+  position: relative; overflow: hidden;
+}
+.menu-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(196,96,58,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.menu-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-warm);
+  border-color: rgba(196,96,58,0.3);
+}
+.card-emoji { font-size: 1.8rem; line-height: 1; }
+.card-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.card-desc {
+  font-size: 0.78rem;
+  color: #8A7560;
+  line-height: 1.5;
+  font-family: var(--font-accent);
+  font-style: italic;
+}
+.card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: auto;
+}
+.card-price {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--avocado);
+}
+.card-price span { font-size: 0.7rem; color: #8A7560; font-family: var(--font-body); font-weight: 400; }
+.add-btn {
+  background: var(--terracotta);
+  color: var(--cream);
+  border: none;
+  border-radius: 999px;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.add-btn:hover { background: var(--terracotta-light); transform: scale(1.1); }
+.add-btn:active { transform: scale(0.95); }
+.card-in-cart {
+  background: rgba(74,94,40,0.12);
+  border-radius: 999px;
+  display: flex; align-items: center; gap: 0.4rem;
+  padding: 0.2rem;
+}
+.qty-btn {
+  background: none; border: none; cursor: pointer;
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; color: var(--avocado);
+  transition: background 0.2s;
+}
+.qty-btn:hover { background: rgba(74,94,40,0.15); }
+.qty-display {
+  font-weight: 700; font-size: 0.9rem; color: var(--avocado);
+  min-width: 20px; text-align: center;
+}
+
+/* Special card (daily) */
+.menu-card.special {
+  background: linear-gradient(135deg, rgba(196,96,58,0.1) 0%, rgba(253,250,243,0.9) 50%);
+  border-color: rgba(196,96,58,0.3);
+}
+.special-badge {
+  position: absolute; top: 0.75rem; right: 0.75rem;
+  background: var(--terracotta);
+  color: var(--cream);
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+/* ============================================================
+   ███████╗██╗██╗  ██╗███████╗██████╗ 
+   ██╔════╝██║╚██╗██╔╝██╔════╝██╔══██╗
+   █████╗  ██║ ╚███╔╝ █████╗  ██║  ██║
+   ██╔══╝  ██║ ██╔██╗ ██╔══╝  ██║  ██║
+   ██║     ██║██╔╝ ██╗███████╗██████╔╝
+   ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═════╝ 
+   FIXED MENU SECTION
+============================================================ */
+.fixed-menu-bg {
+  background: linear-gradient(180deg, var(--cream) 0%, var(--sand) 100%);
+  border-top: 1px solid var(--sand-darker);
+  border-bottom: 1px solid var(--sand-darker);
+}
+.fixed-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+.category-section { margin-bottom: 2rem; }
+.category-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--avocado-dark);
+  margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.category-title::after {
+  content: '';
+  flex: 1; height: 1px;
+  background: linear-gradient(to right, var(--avocado-light), transparent);
+}
+.fixed-card {
+  background: var(--cream);
+  border: 1px solid var(--sand-darker);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+  transition: all 0.2s;
+}
+.fixed-card:hover { border-color: var(--terracotta); transform: translateX(3px); }
+.fixed-card-left { display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 0; }
+.fixed-card-emoji { font-size: 1.4rem; flex-shrink: 0; }
+.fixed-card-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.fixed-card-price {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--terracotta);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   ██╗      ██████╗  ██████╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗███████╗███████╗
+   ██║     ██╔═══██╗██╔════╝██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝██╔════╝
+   ██║     ██║   ██║██║     ███████║   ██║   ██║██║   ██║██╔██╗ ██║█████╗  ███████╗
+   ██║     ██║   ██║██║     ██╔══██║   ██║   ██║██║   ██║██║╚██╗██║██╔══╝  ╚════██║
+   ███████╗╚██████╔╝╚██████╗██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║███████╗███████║
+   ╚══════╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚══════╝
+   LOCATIONS
+============================================================ */
+.locations-bg { background: var(--avocado-dark); }
+.location-card {
+  background: rgba(242,236,216,0.07);
+  border: 1px solid rgba(242,236,216,0.15);
+  border-radius: var(--radius-card);
+  padding: 2rem;
+  flex: 1;
+  min-width: 280px;
+  backdrop-filter: blur(10px);
+  transition: all 0.25s;
+}
+.location-card:hover { background: rgba(242,236,216,0.12); border-color: rgba(242,236,216,0.25); }
+.location-icon {
+  width: 44px; height: 44px;
+  background: var(--terracotta);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+.location-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--sand);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.location-address {
+  font-size: 0.85rem;
+  color: rgba(242,236,216,0.65);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+.location-hours {
+  font-size: 0.8rem;
+  color: var(--gold-light);
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+}
+.location-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  color: var(--terracotta-light);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(196,96,58,0.3);
+  padding-bottom: 2px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.location-link:hover { color: var(--terracotta-light); border-color: var(--terracotta-light); }
+
+/* ============================================================
+    ██████╗ █████╗ ██████╗ ████████╗
+   ██╔════╝██╔══██╗██╔══██╗╚══██╔══╝
+   ██║     ███████║██████╔╝   ██║   
+   ██║     ██╔══██║██╔══██╗   ██║   
+   ╚██████╗██║  ██║██║  ██║   ██║   
+    ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   
+   CART DRAWER
+============================================================ */
+.cart-overlay {
+  position: fixed; inset: 0; z-index: 1100;
+  background: rgba(26,18,8,0.6);
+  backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+.cart-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 1101;
+  width: min(420px, 100vw);
+  background: var(--cream);
+  box-shadow: var(--shadow-deep);
+  display: flex; flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.cart-drawer.open { transform: translateX(0); }
+.cart-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--sand-darker);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--sand);
+}
+.cart-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.cart-close {
+  background: none; border: none; cursor: pointer;
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; color: #8A7560;
+  transition: background 0.2s;
+}
+.cart-close:hover { background: var(--sand-darker); }
+.cart-body { flex: 1; overflow-y: auto; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+.cart-empty {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; gap: 0.75rem;
+  color: #8A7560; font-size: 0.9rem;
+}
+.cart-empty-icon { font-size: 3rem; }
+.cart-item {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.875rem;
+  background: var(--sand);
+  border-radius: 12px;
+  border: 1px solid var(--sand-darker);
+}
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-name { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
+.cart-item-price { font-size: 0.8rem; color: #8A7560; }
+.cart-item-controls { display: flex; align-items: center; gap: 0.4rem; }
+.cart-footer {
+  padding: 1.25rem;
+  border-top: 1px solid var(--sand-darker);
+  background: var(--sand);
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.cart-total {
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.cart-total-label { font-size: 0.85rem; color: #8A7560; }
+.cart-total-value {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--avocado);
+}
+.cart-form { display: flex; flex-direction: column; gap: 0.75rem; }
+.cart-input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid var(--sand-darker);
+  border-radius: 10px;
+  background: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--ink);
+  transition: border-color 0.2s;
+  outline: none;
+}
+.cart-input:focus { border-color: var(--terracotta); }
+.cart-input::placeholder { color: #B0A090; }
+.whatsapp-btn {
+  width: 100%;
+  background: #25D366;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+}
+.whatsapp-btn:hover { background: #1ebe5a; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,211,102,0.4); }
+.whatsapp-btn:disabled { background: #aaa; box-shadow: none; cursor: not-allowed; transform: none; }
+
+/* ============================================================
+   ██╗    ██╗██╗  ██╗ █████╗ ████████╗███████╗ █████╗ ██████╗ ██████╗ 
+   ██║    ██║██║  ██║██╔══██╗╚══██╔══╝██╔════╝██╔══██╗██╔══██╗██╔══██╗
+   ██║ █╗ ██║███████║███████║   ██║   ███████╗███████║██████╔╝██████╔╝
+   ██║███╗██║██╔══██║██╔══██║   ██║   ╚════██║██╔══██║██╔═══╝ ██╔═══╝ 
+   ╚███╔███╔╝██║  ██║██║  ██║   ██║   ███████║██║  ██║██║     ██║     
+    ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝     
+   FLOATING WHATSAPP
+============================================================ */
+.fab-wa {
+  position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 800;
+  background: #25D366;
+  color: white;
+  border: none; border-radius: 999px;
+  padding: 0.9rem 1.4rem;
+  display: flex; align-items: center; gap: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  animation: fabBounce 3s ease infinite 2s;
+  transition: all 0.2s;
+}
+.fab-wa:hover { transform: scale(1.05); box-shadow: 0 6px 28px rgba(37,211,102,0.5); animation: none; }
+@keyframes fabBounce {
+  0%,90%,100%{transform:translateY(0)} 95%{transform:translateY(-6px)}
+}
+
+/* ============================================================
+   ███████╗ ██████╗  ██████╗ ████████╗███████╗██████╗ 
+   ██╔════╝██╔═══██╗██╔═══██╗╚══██╔══╝██╔════╝██╔══██╗
+   █████╗  ██║   ██║██║   ██║   ██║   █████╗  ██████╔╝
+   ██╔══╝  ██║   ██║██║   ██║   ██║   ██╔══╝  ██╔══██╗
+   ██║     ╚██████╔╝╚██████╔╝   ██║   ███████╗██║  ██║
+   ╚═╝      ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝╚═╝  ╚═╝
+   FOOTER
+============================================================ */
+footer {
+  background: var(--ink);
+  color: var(--sand-dark);
+  padding: 3rem 2rem 2rem;
+  text-align: center;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--sand);
+  margin-bottom: 0.5rem;
+}
+.footer-logo span { color: var(--terracotta-light); font-style: italic; }
+.footer-tagline {
+  font-family: var(--font-accent);
+  font-style: italic;
+  color: rgba(232,223,196,0.5);
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+.footer-links {
+  display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.footer-link {
+  color: rgba(232,223,196,0.6);
+  font-size: 0.8rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--terracotta-light); }
+.footer-copy {
+  border-top: 1px solid rgba(232,223,196,0.1);
+  padding-top: 1.5rem;
+  font-size: 0.75rem;
+  color: rgba(232,223,196,0.3);
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 5.5rem; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--avocado-dark);
+  color: var(--sand);
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  z-index: 2000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Mobile */
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .hero { padding: 1.5rem; }
+  .section { padding: 3.5rem 1.25rem; }
+  .locations-flex { flex-direction: column; }
+  .specials-grid { grid-template-columns: 1fr 1fr; padding: 1rem; gap: 0.75rem; }
+  .fixed-menu-grid { grid-template-columns: 1fr 1fr; }
+  .cart-input { font-size: 16px; }
+}
+@media (max-width: 400px) {
+  .specials-grid { grid-template-columns: 1fr; }
+  .fixed-menu-grid { grid-template-columns: 1fr; }
+}
+
+/* Animations */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="noise-overlay"></div>
+
+<!-- ============================================================
+     ███╗   ██╗ █████╗ ██╗   ██╗
+     NAVIGATION
+============================================================ -->
+<nav class="nav" id="navbar">
+  <div class="nav-logo">Las <span>Cazuelas</span></div>
+  <div class="nav-links">
+    <a class="nav-link" onclick="scrollTo('menu-section')">Menú</a>
+    <a class="nav-link" onclick="scrollTo('fijos-section')">Carta Fija</a>
+    <a class="nav-link" onclick="scrollTo('location-section')">Sucursales</a>
+  </div>
+  <button class="nav-cart-btn" onclick="toggleCart()">
+    🛒 Mi Pedido
+    <span class="cart-count" id="cart-count">0</span>
+  </button>
+</nav>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section class="hero" id="top">
+  <svg class="hero-mandala" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="200" cy="200" r="190" stroke="#F5F5DC" stroke-width="1"/>
+    <circle cx="200" cy="200" r="160" stroke="#F5F5DC" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="130" stroke="#F5F5DC" stroke-width="1"/>
+    <circle cx="200" cy="200" r="100" stroke="#F5F5DC" stroke-width="0.5"/>
+    <circle cx="200" cy="200" r="70" stroke="#F5F5DC" stroke-width="1"/>
+    <line x1="10" y1="200" x2="390" y2="200" stroke="#F5F5DC" stroke-width="0.5"/>
+    <line x1="200" y1="10" x2="200" y2="390" stroke="#F5F5DC" stroke-width="0.5"/>
+    <line x1="55" y1="55" x2="345" y2="345" stroke="#F5F5DC" stroke-width="0.5"/>
+    <line x1="345" y1="55" x2="55" y2="345" stroke="#F5F5DC" stroke-width="0.5"/>
+    <polygon points="200,20 380,310 20,310" stroke="#F5F5DC" stroke-width="0.5" fill="none"/>
+    <polygon points="200,380 20,90 380,90" stroke="#F5F5DC" stroke-width="0.5" fill="none"/>
+    <circle cx="200" cy="200" r="20" stroke="#F5F5DC" stroke-width="1.5"/>
+  </svg>
+
+  <div class="hero-badge">🥘 Cocina Económica · Aguascalientes</div>
+  <h1 class="hero-title">
+    El Buen Sabor
+    <span>Las Cazuelas</span>
+  </h1>
+  <p class="hero-sub">Comida casera de corazón, hecha con los mejores ingredientes y sazón de siempre.</p>
+  <div class="hero-cta-group">
+    <button class="btn-primary" onclick="scrollTo('menu-section')">Ver Menú del Día 🍽️</button>
+    <button class="btn-secondary" onclick="scrollTo('location-section')">Nuestras Sucursales</button>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Explorar</span>
+    <div class="scroll-dot"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     DAILY MENU
+============================================================ -->
+<div id="menu-section">
+<div class="section">
+  <p class="section-label reveal">🌮 Platillos del Día</p>
+  <h2 class="section-title reveal">Menú <em>Especial</em><br>de la Semana</h2>
+  <div class="divider reveal"></div>
+  <p class="section-desc reveal">Cada día te sorprendemos con un menú diferente. Comida casera, porciones generosas, y el sabor que te hace volver.</p>
+
+  <div class="day-tabs reveal" style="margin-top:2rem" id="day-tabs"></div>
+
+  <div id="daily-menu-container"></div>
+</div>
+</div>
+
+<!-- ============================================================
+     FIXED MENU
+============================================================ -->
+<div class="fixed-menu-bg" id="fijos-section">
+<div class="section">
+  <p class="section-label reveal">📋 Carta Permanente</p>
+  <h2 class="section-title reveal">Siempre <em>Disponible</em></h2>
+  <div class="divider reveal"></div>
+  <p class="section-desc reveal">Más allá del menú del día, contamos con una amplia selección disponible toda la semana.</p>
+  <div style="margin-top:2.5rem" id="fixed-menu-container"></div>
+</div>
+</div>
+
+<!-- ============================================================
+     LOCATIONS
+============================================================ -->
+<div class="locations-bg" id="location-section">
+<div class="section">
+  <p class="section-label reveal" style="color:var(--gold-light)">📍 Encuéntranos</p>
+  <h2 class="section-title reveal" style="color:var(--sand)">Dos <em style="color:var(--terracotta-light)">Sucursales</em><br>a tu Servicio</h2>
+  <div class="divider reveal"></div>
+  <div class="locations-flex reveal" style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:2.5rem">
+    <div class="location-card">
+      <div class="location-icon">🏪</div>
+      <div class="location-name">Plaza Bosques Sereno</div>
+      <div class="location-address">Aquiles Elorduy Local 9<br>A lado del cajero Banorte<br>Aguascalientes, Ags.</div>
+      <div class="location-hours">⏰ Lun – Vie &nbsp;·&nbsp; 8:00 AM – 5:30 PM</div>
+      <a class="location-link" href="https://maps.google.com/?q=Plaza+Bosques+Sereno+Aguascalientes" target="_blank">
+        Ver en Google Maps →
+      </a>
+    </div>
+    <div class="location-card">
+      <div class="location-icon">🏡</div>
+      <div class="location-name">Sucursal Colinas del Río</div>
+      <div class="location-address">Camino Antiguo a San Ignacio #105<br>Colinas del Río<br>Aguascalientes, Ags.</div>
+      <div class="location-hours">⏰ Lun – Vie &nbsp;·&nbsp; 8:00 AM – 5:30 PM</div>
+      <a class="location-link" href="https://maps.google.com/?q=Camino+Antiguo+San+Ignacio+105+Colinas+del+Rio+Aguascalientes" target="_blank">
+        Ver en Google Maps →
+      </a>
+    </div>
+  </div>
+  <div class="reveal" style="margin-top:2rem;padding:1.25rem 1.5rem;background:rgba(242,236,216,0.07);border:1px solid rgba(242,236,216,0.15);border-radius:14px;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+    <span style="font-size:1.8rem">📱</span>
+    <div>
+      <div style="color:var(--sand);font-weight:600;font-size:0.95rem;margin-bottom:0.2rem">WhatsApp para Pedidos</div>
+      <div style="color:rgba(242,236,216,0.6);font-size:0.82rem">449-173-33-34 &nbsp;·&nbsp; 449-261-07-42</div>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:0.75rem;flex-wrap:wrap">
+      <a href="https://wa.me/524491733334" target="_blank" style="background:#25D366;color:white;text-decoration:none;padding:0.6rem 1.2rem;border-radius:999px;font-size:0.82rem;font-weight:600;display:flex;align-items:center;gap:0.4rem">📲 Sucursal 1</a>
+      <a href="https://wa.me/524492610742" target="_blank" style="background:#25D366;color:white;text-decoration:none;padding:0.6rem 1.2rem;border-radius:999px;font-size:0.82rem;font-weight:600;display:flex;align-items:center;gap:0.4rem">📲 Sucursal 2</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="footer-logo">Las <span>Cazuelas</span></div>
+  <div class="footer-tagline">"El Buen Sabor" · Cocina Económica · Aguascalientes</div>
+  <div class="footer-links">
+    <a class="footer-link" onclick="scrollTo('menu-section')">Menú del Día</a>
+    <a class="footer-link" onclick="scrollTo('fijos-section')">Carta Permanente</a>
+    <a class="footer-link" onclick="scrollTo('location-section')">Sucursales</a>
+    <a class="footer-link" href="https://wa.me/524491733334" target="_blank">WhatsApp</a>
+  </div>
+  <div style="display:flex;justify-content:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap">
+    <span style="background:rgba(242,236,216,0.07);color:rgba(232,223,196,0.5);font-size:0.75rem;padding:0.3rem 0.8rem;border-radius:999px">DidiFood</span>
+    <span style="background:rgba(242,236,216,0.07);color:rgba(232,223,196,0.5);font-size:0.75rem;padding:0.3rem 0.8rem;border-radius:999px">Uber Eats</span>
+    <span style="background:rgba(242,236,216,0.07);color:rgba(232,223,196,0.5);font-size:0.75rem;padding:0.3rem 0.8rem;border-radius:999px">Rappi</span>
+    <span style="background:rgba(242,236,216,0.07);color:rgba(232,223,196,0.5);font-size:0.75rem;padding:0.3rem 0.8rem;border-radius:999px">Servicio a Domicilio 🛵</span>
+  </div>
+  <div class="footer-copy">© 2026 Cocina Económica El Buen Sabor Las Cazuelas · Aguascalientes, México · Hecho con ❤️ y mucho sazón</div>
+</footer>
+
+<!-- ============================================================
+     CART DRAWER
+============================================================ -->
+<div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cart-drawer">
+  <div class="cart-header">
+    <div class="cart-title">🛒 Mi Pedido</div>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cart-body"></div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total">
+      <span class="cart-total-label">Total estimado</span>
+      <span class="cart-total-value" id="cart-total-display">$0</span>
+    </div>
+    <div class="cart-form">
+      <input class="cart-input" id="input-name" placeholder="Tu nombre" type="text" />
+      <input class="cart-input" id="input-address" placeholder="Dirección o 'Recoger en sucursal'" type="text" />
+      <input class="cart-input" id="input-sucursal" placeholder="Sucursal: Plaza Bosques o Colinas del Río" type="text" />
+      <button class="whatsapp-btn" onclick="sendWhatsApp()" id="wa-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Enviar Pedido por WhatsApp
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating WhatsApp -->
+<button class="fab-wa" onclick="window.open('https://wa.me/524491733334','_blank')">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  Pedido Directo
+</button>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   ██████╗  █████╗ ████████╗ █████╗ 
+   ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗
+   ██║  ██║███████║   ██║   ███████║
+   ██║  ██║██╔══██║   ██║   ██╔══██║
+   ██████╔╝██║  ██║   ██║   ██║  ██║
+   ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝
+   DATA — PRICES CLEARLY MARKED FOR EASY EDITING
+   NOTE: Modify prices below (in MXN pesos).
+   Format: price (number, no currency symbol)
+============================================================ */
+
+/* ── DAILY SPECIALS ─────────────────────────────────────────────
+   Prices shown are estimates (MXN). Adjust as needed.
+   Each item: { name, emoji, desc, price }
+   price = price per portion in pesos
+──────────────────────────────────────────────────────────────── */
+const DAILY_MENUS = {
+  lunes: {
+    label: "Lunes",
+    agua: "Limón con Chía",
+    specials: [
+      { name: "Asado de Bodas",        emoji: "🍖", desc: "Guiso tradicional estilo Zacatecas en chile ancho", price: 70 },
+      { name: "Costillas a la BBQ",    emoji: "🥩", desc: "Costillas de cerdo glaseadas en salsa BBQ",         price: 75 },
+      { name: "Molida en Molcajete",   emoji: "🌶️", desc: "Carne molida con salsa de molcajete y verduras",   price: 65 },
+      { name: "Ensalada de Pollo",     emoji: "🥗", desc: "Pollo deshebrado con verduras frescas y aderezo",   price: 60 },
+      { name: "Bistec a la Mexicana",  emoji: "🥩", desc: "Bistec con jitomate, cebolla y chiles",            price: 70 },
+      { name: "Chicharrón Duro",       emoji: "🐷", desc: "Chicharrón crujiente en salsa roja o verde",       price: 55 },
+      { name: "Chicharrón Prensado",   emoji: "🫕", desc: "Chicharrón prensado guisado al estilo casero",     price: 55 },
+      { name: "Chuleta Ahumada",       emoji: "🍗", desc: "Chuleta de cerdo ahumada con guarnición",          price: 70 },
+    ]
+  },
+  martes: {
+    label: "Martes",
+    agua: "Jamaica",
+    specials: [
+      { name: "Mole Verde",            emoji: "🫕", desc: "Pollo bañado en mole verde con pepita y hierbas",  price: 72 },
+      { name: "Chamorros en Adobo",    emoji: "🍖", desc: "Chamorro de cerdo en adobo de chiles secos",      price: 80 },
+      { name: "Arrachera c/Molcajete", emoji: "🥩", desc: "Arrachera a la plancha con salsa de molcajete",   price: 85 },
+      { name: "Trocito 5 Chiles",      emoji: "🌶️", desc: "Trozos de res en salsa de cinco chiles",         price: 70 },
+      { name: "Tinga de Res",          emoji: "🫕", desc: "Tinga de res deshebrada con chipotle y cebolla",  price: 65 },
+      { name: "Chuleta Ahumada",       emoji: "🍗", desc: "Chuleta de cerdo ahumada con guarnición",         price: 70 },
+      { name: "Chicharrón Carnudo",    emoji: "🐷", desc: "Chicharrón con carne en salsa de tu elección",    price: 60 },
+      { name: "Chicharrón Prensado",   emoji: "🫕", desc: "Chicharrón prensado guisado al estilo casero",    price: 55 },
+    ]
+  },
+  miercoles: {
+    label: "Miércoles",
+    agua: "Mango",
+    specials: [
+      { name: "Cochinita Pibil",       emoji: "🐷", desc: "Cerdo marinado en achiote, estilo yucateco",       price: 72 },
+      { name: "Carne en su Jugo",      emoji: "🫕", desc: "Carne de res cocida en su propio jugo con frijoles", price: 72 },
+      { name: "Bistec Arriero",        emoji: "🥩", desc: "Bistec con longaniza, chile y cebolla",             price: 70 },
+      { name: "Pollo Crema Poblano",   emoji: "🐔", desc: "Pechuga de pollo en crema de chile poblano",        price: 70 },
+      { name: "Albóndigas",            emoji: "🍲", desc: "Albóndigas de res en caldillo de jitomate",          price: 65 },
+      { name: "Chicharrón Duro",       emoji: "🐷", desc: "Chicharrón crujiente en salsa roja o verde",        price: 55 },
+      { name: "Chicharrón Prensado",   emoji: "🫕", desc: "Chicharrón prensado guisado al estilo casero",      price: 55 },
+      { name: "Chuleta Ahumada",       emoji: "🍗", desc: "Chuleta de cerdo ahumada con guarnición",           price: 70 },
+    ]
+  },
+  jueves: {
+    label: "Jueves",
+    agua: "Limón con Chía",
+    specials: [
+      { name: "Encacahuatado",         emoji: "🥜", desc: "Pollo en salsa de cacahuate con chiles y especias", price: 70 },
+      { name: "Chiles con Carne",      emoji: "🌶️", desc: "Chiles poblanos rellenos de carne molida",          price: 72 },
+      { name: "Bistec Arriero",        emoji: "🥩", desc: "Bistec con longaniza, chile y cebolla",              price: 70 },
+      { name: "Costilla Molcajete",    emoji: "🍖", desc: "Costilla de cerdo en salsa de molcajete asado",      price: 78 },
+      { name: "Trocito Salsa Verde",   emoji: "🫕", desc: "Trozos de res en salsa verde con nopalitos",         price: 68 },
+      { name: "Chicharrón Duro",       emoji: "🐷", desc: "Chicharrón crujiente en salsa roja o verde",         price: 55 },
+      { name: "Chicharrón Prensado",   emoji: "🫕", desc: "Chicharrón prensado guisado al estilo casero",       price: 55 },
+      { name: "Chuleta Ahumada",       emoji: "🍗", desc: "Chuleta de cerdo ahumada con guarnición",            price: 70 },
+    ]
+  }
+};
+
+/* ── FIXED MENU ──────────────────────────────────────────────────
+   Prices in MXN pesos per portion. Modify as needed.
+──────────────────────────────────────────────────────────────── */
+const FIXED_MENU = [
+  {
+    category: "🍗 Proteínas",
+    items: [
+      { name: "Empanizado de Pollo",       emoji: "🍗", price: 65 },
+      { name: "Pollo a la Plancha",         emoji: "🍗", price: 62 },
+      { name: "Carne Asada",               emoji: "🥩", price: 75 },
+      { name: "Empanizado de Res",         emoji: "🥩", price: 72 },
+      { name: "Filete de Pescado Emp.",    emoji: "🐟", price: 70 },
+      { name: "Caldo de Pollo",            emoji: "🍲", price: 60 },
+    ]
+  },
+  {
+    category: "🫑 Chiles y Vegetarianos",
+    items: [
+      { name: "Chiles Rellenos Verdes",    emoji: "🌶️", price: 55 },
+      { name: "Chiles Rellenos Rojos",     emoji: "🌶️", price: 55 },
+      { name: "Chiles Güeros",             emoji: "🫑", price: 50 },
+      { name: "Tacos de Papa",             emoji: "🌮", price: 45 },
+      { name: "Flautas",                   emoji: "🌮", price: 50 },
+      { name: "Enchiladas Verdes",         emoji: "🫔", price: 55 },
+      { name: "Enchiladas Rojas",          emoji: "🫔", price: 55 },
+    ]
+  },
+  {
+    category: "🥪 Tortas",
+    items: [
+      { name: "Torta de Papa",             emoji: "🥪", price: 42 },
+      { name: "Torta de Papa con Atún",    emoji: "🥪", price: 48 },
+      { name: "Torta de Papa con Queso",   emoji: "🥪", price: 45 },
+    ]
+  },
+  {
+    category: "🫘 Guarniciones y Sopas",
+    items: [
+      { name: "Frijol de la Olla",         emoji: "🫘", price: 30 },
+      { name: "Frijol Guisado",            emoji: "🫘", price: 32 },
+      { name: "Espagueti Rojo",            emoji: "🍝", price: 35 },
+      { name: "Nopales Guisados",          emoji: "🌵", price: 32 },
+      { name: "Nopales en Pico de Gallo",  emoji: "🌵", price: 35 },
+      { name: "Arroz Blanco",              emoji: "🍚", price: 25 },
+      { name: "Arroz Rojo",               emoji: "🍚", price: 25 },
+      { name: "Sopa de Pasta",             emoji: "🍲", price: 28 },
+      { name: "Verduras al Vapor",         emoji: "🥦", price: 30 },
+      { name: "Ensalada de Lechuga",       emoji: "🥬", price: 28 },
+      { name: "Papas a la Mantequilla",    emoji: "🥔", price: 32 },
+      { name: "Crema de Verduras",         emoji: "🥣", price: 35 },
+    ]
+  }
+];
+
+/* ============================================================
+   ███████╗████████╗ █████╗ ████████╗███████╗
+   ██╔════╝╚══██╔══╝██╔══██╗╚══██╔══╝██╔════╝
+   ███████╗   ██║   ███████║   ██║   █████╗  
+   ╚════██║   ██║   ██╔══██║   ██║   ██╔══╝  
+   ███████║   ██║   ██║  ██║   ██║   ███████╗
+   ╚══════╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+   APPLICATION STATE & LOGIC
+============================================================ */
+let cart = {}; // { itemKey: { name, price, qty } }
+let activeDay = '';
+
+function getTodayKey() {
+  const days = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
+  const d = new Date().getDay();
+  const key = days[d];
+  return DAILY_MENUS[key] ? key : 'lunes';
+}
+
+function formatMXN(n) { return '$' + n.toLocaleString('es-MX'); }
+
+/* ── CART ── */
+function getCartCount() { return Object.values(cart).reduce((s,i)=>s+i.qty,0); }
+function getCartTotal() { return Object.values(cart).reduce((s,i)=>s+(i.price*i.qty),0); }
+
+function addToCart(key, name, price) {
+  if (cart[key]) cart[key].qty++;
+  else cart[key] = { name, price, qty: 1 };
+  updateCartUI();
+  showToast(`✅ ${name} agregado`);
+}
+function removeFromCart(key) {
+  if (!cart[key]) return;
+  cart[key].qty--;
+  if (cart[key].qty <= 0) delete cart[key];
+  updateCartUI();
+}
+function getQty(key) { return cart[key] ? cart[key].qty : 0; }
+
+function updateCartUI() {
+  document.getElementById('cart-count').textContent = getCartCount();
+  renderCartDrawer();
+  // Re-render buttons in menu
+  document.querySelectorAll('[data-item-key]').forEach(el => {
+    const key = el.dataset.itemKey;
+    const q = getQty(key);
+    const priceNum = parseInt(el.dataset.price);
+    const name = el.dataset.name;
+    if (q > 0) {
+      el.innerHTML = `
+        <div class="card-in-cart">
+          <button class="qty-btn" onclick="removeFromCart('${key}');event.stopPropagation()">−</button>
+          <span class="qty-display">${q}</span>
+          <button class="qty-btn" onclick="addToCart('${key}','${name}',${priceNum});event.stopPropagation()">+</button>
+        </div>`;
+    } else {
+      el.innerHTML = `<button class="add-btn" onclick="addToCart('${key}','${name}',${priceNum})">+</button>`;
+    }
+  });
+}
+
+function renderCartDrawer() {
+  const body = document.getElementById('cart-body');
+  const footer = document.getElementById('cart-footer');
+  const items = Object.entries(cart);
+  if (items.length === 0) {
+    body.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🍽️</div><div>Tu pedido está vacío</div><div style="font-size:0.78rem;color:#C0B0A0">Agrega platillos del menú</div></div>`;
+    footer.style.display = 'none';
+    return;
+  }
+  footer.style.display = 'flex';
+  body.innerHTML = items.map(([key, item]) => `
+    <div class="cart-item">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${formatMXN(item.price)} × ${item.qty} = ${formatMXN(item.price*item.qty)}</div>
+      </div>
+      <div class="cart-item-controls">
+        <button class="qty-btn" onclick="removeFromCart('${key}')">−</button>
+        <span class="qty-display">${item.qty}</span>
+        <button class="qty-btn" onclick="addToCart('${key}','${item.name}',${item.price})">+</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('cart-total-display').textContent = formatMXN(getCartTotal());
+}
+
+function toggleCart() {
+  document.getElementById('cart-overlay').classList.toggle('open');
+  document.getElementById('cart-drawer').classList.toggle('open');
+}
+
+/* ── WHATSAPP ORDER ── */
+function sendWhatsApp() {
+  const name = document.getElementById('input-name').value.trim();
+  const address = document.getElementById('input-address').value.trim();
+  const sucursal = document.getElementById('input-sucursal').value.trim();
+  if (!name) { showToast('⚠️ Por favor ingresa tu nombre'); return; }
+  const items = Object.values(cart);
+  if (!items.length) { showToast('⚠️ Tu pedido está vacío'); return; }
+  const itemList = items.map(i=>`  • ${i.name} x${i.qty} = ${formatMXN(i.price*i.qty)}`).join('\n');
+  const msg = `¡Hola! Quisiera ordenar:\n\n${itemList}\n\n💰 Total estimado: ${formatMXN(getCartTotal())}\n📍 Entrega en: ${address || 'Por definir'}\n🏪 Sucursal: ${sucursal || 'Por confirmar'}\n👤 Mi nombre es: ${name}\n\n¡Gracias! 😊`;
+  window.open(`https://wa.me/524491733334?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+/* ── RENDER DAILY MENU ── */
+function renderDayMenu(dayKey) {
+  activeDay = dayKey;
+  const data = DAILY_MENUS[dayKey];
+  const todayKey = getTodayKey();
+  // Update tab states
+  document.querySelectorAll('.day-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.day === dayKey);
+  });
+  const container = document.getElementById('daily-menu-container');
+  const isToday = dayKey === todayKey;
+  const cards = data.specials.map((item, i) => {
+    const key = `${dayKey}-${i}`;
+    const q = getQty(key);
+    const btnHtml = q > 0
+      ? `<div class="card-in-cart"><button class="qty-btn" onclick="removeFromCart('${key}')">−</button><span class="qty-display">${q}</span><button class="qty-btn" onclick="addToCart('${key}','${item.name}',${item.price})">+</button></div>`
+      : `<button class="add-btn" onclick="addToCart('${key}','${item.name}',${item.price})">+</button>`;
+    return `
+      <div class="menu-card special" style="animation: fadeUp 0.4s ease ${i*0.05}s both">
+        <span class="special-badge">Especial</span>
+        <div class="card-emoji">${item.emoji}</div>
+        <div class="card-name">${item.name}</div>
+        <div class="card-desc">${item.desc}</div>
+        <div class="card-footer">
+          <div class="card-price">${formatMXN(item.price)} <span>/porción</span></div>
+          <div data-item-key="${key}" data-price="${item.price}" data-name="${item.name}">${btnHtml}</div>
+        </div>
+      </div>`;
+  }).join('');
+  container.innerHTML = `
+    <div class="specials-header">
+      <div class="specials-header-title">Menú ${data.label}</div>
+      ${isToday ? '<span class="today-badge">HOY</span>' : ''}
+      <span style="margin-left:auto;font-size:0.8rem;color:rgba(242,236,216,0.6)">🍹 Agua: ${data.agua}</span>
+    </div>
+    <div class="specials-grid">${cards}</div>`;
+}
+
+/* ── RENDER FIXED MENU ── */
+function renderFixedMenu() {
+  const container = document.getElementById('fixed-menu-container');
+  container.innerHTML = FIXED_MENU.map(cat => `
+    <div class="category-section reveal">
+      <div class="category-title">${cat.category}</div>
+      <div class="fixed-menu-grid">
+        ${cat.items.map((item,i) => {
+          const key = `fixed-${cat.category}-${i}`;
+          const q = getQty(key);
+          const btnHtml = q > 0
+            ? `<div class="card-in-cart" style="transform:scale(0.9)"><button class="qty-btn" onclick="removeFromCart('${key}')">−</button><span class="qty-display">${q}</span><button class="qty-btn" onclick="addToCart('${key}','${item.name}',${item.price})">+</button></div>`
+            : `<button class="add-btn" onclick="addToCart('${key}','${item.name}',${item.price})">+</button>`;
+          return `
+            <div class="fixed-card">
+              <div class="fixed-card-left">
+                <span class="fixed-card-emoji">${item.emoji}</span>
+                <span class="fixed-card-name">${item.name}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:0.6rem;flex-shrink:0">
+                <span class="fixed-card-price">${formatMXN(item.price)}</span>
+                <div data-item-key="${key}" data-price="${item.price}" data-name="${item.name}">${btnHtml}</div>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>`).join('');
+}
+
+/* ── RENDER TABS ── */
+function renderTabs() {
+  const tabs = document.getElementById('day-tabs');
+  const todayKey = getTodayKey();
+  tabs.innerHTML = Object.entries(DAILY_MENUS).map(([key, data]) => `
+    <button class="day-tab ${key === todayKey ? 'today-tab' : ''} ${key === activeDay ? 'active' : ''}"
+      data-day="${key}" onclick="renderDayMenu('${key}')">
+      ${data.label}
+    </button>`).join('');
+}
+
+/* ── TOAST ── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+/* ── SCROLL UTIL ── */
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* ── REVEAL ANIMATION ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+function observeReveal() {
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+}
+
+/* ── INIT ── */
+(function init() {
+  const todayKey = getTodayKey();
+  renderDayMenu(todayKey);
+  renderTabs();
+  renderFixedMenu();
+  renderCartDrawer();
+  setTimeout(observeReveal, 100);
+})();
+</script>
+</body>
+</html>
