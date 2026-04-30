@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -707,74 +708,6 @@ button { font-family: var(--font-body); }
   flex-shrink: 0;
 }
 
-/* =============================================================
-   BANQUETES / CTA SECTION
-============================================================= */
-.banquetes-section {
-  background: linear-gradient(135deg, var(--avocado-dark) 0%, #1E2810 40%, var(--terracotta-dark) 100%);
-  position: relative; overflow: hidden;
-  padding: 5rem 2rem;
-}
-.banquetes-section::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 60% at 80% 50%, rgba(201,153,42,0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
-.banquetes-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
-}
-.banquetes-img {
-  border-radius: var(--radius-card);
-  overflow: hidden;
-  aspect-ratio: 2/3;
-  box-shadow: var(--shadow-deep);
-  position: relative;
-}
-.banquetes-img img { width: 100%; height: 100%; object-fit: cover; }
-.banquetes-content { position: relative; z-index: 2; }
-.banquetes-label {
-  font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--gold-light); font-weight: 600; margin-bottom: 1rem;
-  display: flex; align-items: center; gap: 0.6rem;
-}
-.banquetes-label::before { content: ''; width: 20px; height: 2px; background: var(--gold-light); border-radius: 1px; }
-.banquetes-title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 900;
-  color: var(--sand);
-  line-height: 1.1;
-  margin-bottom: 1.5rem;
-}
-.banquetes-title em { color: var(--gold-light); font-style: italic; }
-.banquetes-desc {
-  font-family: var(--font-accent);
-  font-style: italic;
-  color: rgba(242,236,216,0.72);
-  font-size: 0.95rem;
-  line-height: 1.75;
-  margin-bottom: 2rem;
-}
-.banquetes-features {
-  display: flex; flex-direction: column; gap: 0.75rem;
-  margin-bottom: 2.5rem;
-}
-.banquetes-feat {
-  display: flex; align-items: center; gap: 0.8rem;
-  color: rgba(242,236,216,0.85);
-  font-size: 0.88rem;
-}
-.banquetes-feat-icon {
-  width: 28px; height: 28px;
-  background: rgba(201,153,42,0.2);
-  border: 1px solid rgba(201,153,42,0.35);
-  border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
 .btn-gold {
   background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
   color: var(--ink);
@@ -1041,8 +974,6 @@ footer {
 ============================================================= */
 @media (max-width: 768px) {
   .nav-links { display: none; }
-  .banquetes-inner { grid-template-columns: 1fr; }
-  .banquetes-img { aspect-ratio: 4/3; }
   .gallery-grid { grid-template-columns: 1fr 1fr; }
   .gallery-card.wide { grid-column: span 2; }
   .promo-grid { grid-template-columns: 1fr; gap: 1rem; }
@@ -1212,36 +1143,6 @@ footer {
   <div style="margin-top:2.5rem" id="fixed-menu-container"></div>
 </div>
 </div>
-
-<!-- BANQUETES CTA -->
-<section class="banquetes-section" aria-label="Servicio de Banquetes">
-  <div class="banquetes-inner">
-    <div class="banquetes-img reveal" id="banquetes-img-wrap">
-      <img id="banquetes-img" alt="Banquetes Las Cazuelas – 26 años de experiencia">
-    </div>
-    <div class="banquetes-content reveal reveal-delay-2">
-      <p class="banquetes-label">🍽️ Servicio Especial</p>
-      <h2 class="banquetes-title">Banquetes &amp; <em>Box Lunch</em></h2>
-      <p class="banquetes-desc">Con 26 años de experiencia, llevamos el sabor casero de Las Cazuelas a tu evento, oficina o celebración.</p>
-      <div class="banquetes-features">
-        <div class="banquetes-feat"><div class="banquetes-feat-icon">🎯</div> Menús personalizados para cada evento</div>
-        <div class="banquetes-feat"><div class="banquetes-feat-icon">🏢</div> Box Lunch para oficinas y corporativos</div>
-        <div class="banquetes-feat"><div class="banquetes-feat-icon">🛵</div> Servicio a domicilio incluido</div>
-        <div class="banquetes-feat"><div class="banquetes-feat-icon">📞</div> Presupuesto sin costo</div>
-      </div>
-      <a class="btn-gold" href="https://wa.me/524491733334?text=Hola%2C%20me%20interesa%20informaci%C3%B3n%20sobre%20banquetes%20y%20box%20lunch" target="_blank" rel="noopener" aria-label="Solicitar cotización de banquetes por WhatsApp">
-        📲 Solicitar Cotización
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- PROMOCIONES -->
-<section class="promo-section" aria-label="Promociones y Servicios">
-  <div class="promo-grid" id="promo-grid">
-    <!-- rendered by JS -->
-  </div>
-</section>
 
 <!-- LOCATIONS -->
 <div class="locations-bg" id="location-section">
@@ -1820,8 +1721,6 @@ function setImages() {
   const logoSrc = IMG_LOGO;
   document.getElementById('hero-logo-img').src = logoSrc;
   document.getElementById('nav-logo-img').src = logoSrc;
-  // Banquetes section
-  document.getElementById('banquetes-img').src = IMG_PROMO3;
 }
 
 /* =============================================================
@@ -1905,7 +1804,6 @@ function observeReveal() {
   setImages();
   renderCarousel();
   renderGallery();
-  renderPromos();
   const todayKey = getTodayKey();
   renderDayMenu(todayKey);
   renderTabs();
@@ -1914,5 +1812,6 @@ function observeReveal() {
   setTimeout(observeReveal, 120);
 })();
 </script>
-</body>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"c29c69d71cd7446992bf7884b511a767","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f485df52e4426c3',t:'MTc3NzU3MTE5OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
